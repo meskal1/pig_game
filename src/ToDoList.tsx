@@ -2,25 +2,37 @@ import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
 import { FilterValuesType } from './App'
 import s from './Todolist.module.scss'
 
-type TasksType = {
+export type TaskType = {
   id: string
   title: string
   isDone: boolean
 }
 type TodolistType = {
+  todolistID: string
   title: string
-  tasks: Array<TasksType>
-  removeTask: (id: string) => void
-  filterTasks: (filterValue: FilterValuesType) => void
-  addTask: (title: string) => void
-  changeTaskStatus: (id: string, isDone: boolean) => void
+  tasks: Array<TaskType>
+  removeTask: (taskID: string, todolistID: string) => void
+  filterTasks: (todolistID: string, filterValue: FilterValuesType) => void
+  addTask: (todolistID: string, taskTitle: string) => void
+  changeTaskStatus: (taskID: string, todolistID: string, isDone: boolean) => void
   filterValue: string
+  removeTodolist: (todolistID: string) => void
 }
 
-export const Todolist: React.FC<TodolistType> = ({ title, tasks, removeTask, filterTasks, addTask, changeTaskStatus, filterValue }) => {
+export const Todolist: React.FC<TodolistType> = ({
+  todolistID,
+  title,
+  tasks,
+  removeTask,
+  filterTasks,
+  addTask,
+  changeTaskStatus,
+  filterValue,
+  removeTodolist,
+}) => {
   const tasksData = tasks.map(taskElement => {
-    const onClickButtonHandler = () => removeTask(taskElement.id)
-    const onChangeInputHandler = () => changeTaskStatus(taskElement.id, taskElement.isDone)
+    const onClickButtonHandler = () => removeTask(taskElement.id, todolistID)
+    const onChangeInputHandler = () => changeTaskStatus(taskElement.id, todolistID, taskElement.isDone)
     return (
       <li key={taskElement.id} className={taskElement.isDone ? s.completed : ''}>
         <input type='checkbox' checked={taskElement.isDone} onChange={onChangeInputHandler} /> <span>{taskElement.title}</span>{' '}
@@ -30,26 +42,35 @@ export const Todolist: React.FC<TodolistType> = ({ title, tasks, removeTask, fil
   })
   const [error, setError] = useState<string | null>(null)
   const [inputValue, setInputValue] = useState<string>('')
+
   const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setError(null)
     setInputValue(e.currentTarget.value)
   }
+
   const onClickAddTaskHandler = () => {
     if (inputValue.trim().length !== 0) {
-      addTask(inputValue.trim())
+      addTask(todolistID, inputValue.trim())
       setInputValue('')
     } else setError('Title is required')
   }
+
   const onKeyDownAddTaskHandler = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') onClickAddTaskHandler()
   }
 
-  const onAllClickHandler = () => filterTasks('all')
-  const onActiveClickHandler = () => filterTasks('active')
-  const onCompletedClickHandler = () => filterTasks('completed')
+  const onAllClickHandler = () => filterTasks(todolistID, 'all')
+  const onActiveClickHandler = () => filterTasks(todolistID, 'active')
+  const onCompletedClickHandler = () => filterTasks(todolistID, 'completed')
+  const onClickRemoveHandler = () => removeTodolist(todolistID)
   return (
     <div>
-      <h3>{title}</h3>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <h3>{title}</h3>
+        <button style={{ width: '20px', height: '20px', margin: '0 0 0 10px' }} onClick={onClickRemoveHandler}>
+          X
+        </button>
+      </div>
       <div>
         <input className={error ? s.error : ''} value={inputValue} onChange={onChangeInputHandler} onKeyPress={onKeyDownAddTaskHandler} />
         <button onClick={onClickAddTaskHandler}>+</button>
