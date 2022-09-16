@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
+import { AddItemForm } from './AddItemForm'
 import { FilterValuesType } from './App'
 import s from './Todolist.module.scss'
 
@@ -40,25 +41,7 @@ export const Todolist: React.FC<TodolistType> = ({
       </li>
     )
   })
-  const [error, setError] = useState<string | null>(null)
-  const [inputValue, setInputValue] = useState<string>('')
-
-  const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setError(null)
-    setInputValue(e.currentTarget.value)
-  }
-
-  const onClickAddTaskHandler = () => {
-    if (inputValue.trim().length !== 0) {
-      addTask(todolistID, inputValue.trim())
-      setInputValue('')
-    } else setError('Title is required')
-  }
-
-  const onKeyDownAddTaskHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') onClickAddTaskHandler()
-  }
-
+  const onClickAddTaskHandler = (taskTitle: string) => addTask(todolistID, taskTitle)
   const onAllClickHandler = () => filterTasks(todolistID, 'all')
   const onActiveClickHandler = () => filterTasks(todolistID, 'active')
   const onCompletedClickHandler = () => filterTasks(todolistID, 'completed')
@@ -71,11 +54,7 @@ export const Todolist: React.FC<TodolistType> = ({
           X
         </button>
       </div>
-      <div>
-        <input className={error ? s.error : ''} value={inputValue} onChange={onChangeInputHandler} onKeyPress={onKeyDownAddTaskHandler} />
-        <button onClick={onClickAddTaskHandler}>+</button>
-      </div>
-      {error && <span className={error ? s.error_message : ''}>{error}</span>}
+      <AddItemForm addItem={onClickAddTaskHandler} />
       <ul>{tasksData}</ul>
       <div>
         <button className={filterValue === 'all' ? s.active : ''} onClick={onAllClickHandler}>

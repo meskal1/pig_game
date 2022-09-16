@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { v1 } from 'uuid'
+import { AddItemForm } from './AddItemForm'
 import './App.css'
 import { TaskType, Todolist } from './Todolist'
 
@@ -59,6 +60,13 @@ function App() {
     setTasks({ ...tasks })
   }
 
+  const addTodolist = (todolistTitle: string) => {
+    const todolistID = v1()
+    setTodolists([{ id: todolistID, title: todolistTitle, filter: 'all' }, ...todolists])
+    tasks[todolistID] = []
+    setTasks({ ...tasks })
+  }
+
   const todoLists = todolists.map(todolist => {
     let filteredTasks = tasks[todolist.id]
     if (todolist.filter === 'active') filteredTasks = filteredTasks.filter(taskElement => taskElement.isDone === false)
@@ -79,6 +87,11 @@ function App() {
     )
   })
 
-  return <div className='app'>{todoLists}</div>
+  return (
+    <div className='app'>
+      <AddItemForm addItem={addTodolist} />
+      {todoLists}
+    </div>
+  )
 }
 export default App
