@@ -1,6 +1,7 @@
-import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
+import React from 'react'
 import { AddItemForm } from './AddItemForm'
 import { FilterValuesType } from './App'
+import { EditableSpan } from './EditableSpan'
 import s from './Todolist.module.scss'
 
 export type TaskType = {
@@ -18,6 +19,8 @@ type TodolistType = {
   changeTaskStatus: (taskID: string, todolistID: string, isDone: boolean) => void
   filterValue: string
   removeTodolist: (todolistID: string) => void
+  changeTaskTitle: (todolistID: string, taskID: string, taskTitle: string) => void
+  changeTodolistTitle: (todolistID: string, todolistTitle: string) => void
 }
 
 export const Todolist: React.FC<TodolistType> = ({
@@ -30,17 +33,22 @@ export const Todolist: React.FC<TodolistType> = ({
   changeTaskStatus,
   filterValue,
   removeTodolist,
+  changeTaskTitle,
+  changeTodolistTitle,
 }) => {
   const tasksData = tasks.map(taskElement => {
     const onClickButtonHandler = () => removeTask(taskElement.id, todolistID)
     const onChangeInputHandler = () => changeTaskStatus(taskElement.id, todolistID, taskElement.isDone)
+    const onChangeTaskTitle = (taskTitle: string) => changeTaskTitle(todolistID, taskElement.id, taskTitle)
     return (
       <li key={taskElement.id} className={taskElement.isDone ? s.completed : ''}>
-        <input type='checkbox' checked={taskElement.isDone} onChange={onChangeInputHandler} /> <span>{taskElement.title}</span>{' '}
+        <input type='checkbox' checked={taskElement.isDone} onChange={onChangeInputHandler} />
+        <EditableSpan itemTitle={taskElement.title} onChange={onChangeTaskTitle} />
         <button onClick={onClickButtonHandler}>X</button>
       </li>
     )
   })
+  const onChangeTodolistTitle = (todolistTitle: string) => changeTodolistTitle(todolistID, todolistTitle)
   const onClickAddTaskHandler = (taskTitle: string) => addTask(todolistID, taskTitle)
   const onAllClickHandler = () => filterTasks(todolistID, 'all')
   const onActiveClickHandler = () => filterTasks(todolistID, 'active')
@@ -49,7 +57,9 @@ export const Todolist: React.FC<TodolistType> = ({
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <h3>{title}</h3>
+        <h3>
+          <EditableSpan itemTitle={title} onChange={onChangeTodolistTitle} />
+        </h3>
         <button style={{ width: '20px', height: '20px', margin: '0 0 0 10px' }} onClick={onClickRemoveHandler}>
           X
         </button>
