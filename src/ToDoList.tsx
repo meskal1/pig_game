@@ -1,10 +1,12 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import { AddItemForm } from './AddItemForm'
-import { FilterValuesType } from './App'
 import { EditableSpan } from './EditableSpan'
+import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, removeTodolistTasksAC } from './TasksReduser'
 import s from './Todolist.module.scss'
+import { changeTodolistTitleAC, removeTodolistAC, tasksFilterValueAC } from './TodolistsReduser'
 
-export type TaskType = {
+type TaskType = {
   id: string
   title: string
   isDone: boolean
@@ -13,33 +15,15 @@ type TodolistType = {
   todolistID: string
   title: string
   tasks: Array<TaskType>
-  removeTask: (taskID: string, todolistID: string) => void
-  filterTasks: (todolistID: string, filterValue: FilterValuesType) => void
-  addTask: (todolistID: string, taskTitle: string) => void
-  changeTaskStatus: (taskID: string, todolistID: string, isDone: boolean) => void
   filterValue: string
-  removeTodolist: (todolistID: string) => void
-  changeTaskTitle: (todolistID: string, taskID: string, taskTitle: string) => void
-  changeTodolistTitle: (todolistID: string, todolistTitle: string) => void
 }
 
-export const Todolist: React.FC<TodolistType> = ({
-  todolistID,
-  title,
-  tasks,
-  removeTask,
-  filterTasks,
-  addTask,
-  changeTaskStatus,
-  filterValue,
-  removeTodolist,
-  changeTaskTitle,
-  changeTodolistTitle,
-}) => {
+export const Todolist: React.FC<TodolistType> = ({ todolistID, title, tasks, filterValue }) => {
+  const dispatch = useDispatch()
   const tasksData = tasks.map(taskElement => {
-    const onClickButtonHandler = () => removeTask(taskElement.id, todolistID)
-    const onChangeInputHandler = () => changeTaskStatus(taskElement.id, todolistID, taskElement.isDone)
-    const onChangeTaskTitle = (taskTitle: string) => changeTaskTitle(todolistID, taskElement.id, taskTitle)
+    const onClickButtonHandler = () => dispatch(removeTaskAC(taskElement.id, todolistID))
+    const onChangeInputHandler = () => dispatch(changeTaskStatusAC(taskElement.id, todolistID, taskElement.isDone))
+    const onChangeTaskTitle = (taskTitle: string) => dispatch(changeTaskTitleAC(todolistID, taskElement.id, taskTitle))
     return (
       <li key={taskElement.id} className={taskElement.isDone ? s.completed : ''}>
         <input type='checkbox' checked={taskElement.isDone} onChange={onChangeInputHandler} />
@@ -48,12 +32,15 @@ export const Todolist: React.FC<TodolistType> = ({
       </li>
     )
   })
-  const onChangeTodolistTitle = (todolistTitle: string) => changeTodolistTitle(todolistID, todolistTitle)
-  const onClickAddTaskHandler = (taskTitle: string) => addTask(todolistID, taskTitle)
-  const onAllClickHandler = () => filterTasks(todolistID, 'all')
-  const onActiveClickHandler = () => filterTasks(todolistID, 'active')
-  const onCompletedClickHandler = () => filterTasks(todolistID, 'completed')
-  const onClickRemoveHandler = () => removeTodolist(todolistID)
+  const onChangeTodolistTitle = (todolistTitle: string) => dispatch(changeTodolistTitleAC(todolistID, todolistTitle))
+  const onClickAddTaskHandler = (taskTitle: string) => dispatch(addTaskAC(todolistID, taskTitle))
+  const onAllClickHandler = () => dispatch(tasksFilterValueAC(todolistID, 'all'))
+  const onActiveClickHandler = () => dispatch(tasksFilterValueAC(todolistID, 'active'))
+  const onCompletedClickHandler = () => dispatch(tasksFilterValueAC(todolistID, 'completed'))
+  const onClickRemoveHandler = () => {
+    dispatch(removeTodolistAC(todolistID))
+    dispatch(removeTodolistTasksAC(todolistID))
+  }
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
