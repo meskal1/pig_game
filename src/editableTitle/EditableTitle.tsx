@@ -6,6 +6,7 @@ export type EditableSpanType = {
 }
 
 export const EditableSpan: React.FC<EditableSpanType> = React.memo(({ itemTitle, onChange }) => {
+  console.log('render EDITABLE_TITLE')
   const [editable, setEditable] = useState<boolean>(false)
   const [titleValue, setTitleValue] = useState<string>('')
   const onDoubleClickSpan = () => {

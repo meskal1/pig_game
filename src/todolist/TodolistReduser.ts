@@ -1,15 +1,14 @@
 import React from 'react'
-// import { FilterValuesType } from './App'
 type FilterValuesType = 'all' | 'active' | 'completed'
-export type TodolistsType = {
+export type TodolistType = {
   id: string
   title: string
   filter: string
 }
-const initialState: Array<TodolistsType> = []
+const initialState: Array<TodolistType> = []
 
 type TodolistReducerType = TasksFilterValueACType | RemoveTodolistACType | AddTodolistACType | ChangeTodolistTitleACType
-export const todolistsReducer = (state: Array<TodolistsType> = initialState, action: TodolistReducerType): Array<TodolistsType> => {
+export const todolistReducer = (state: Array<TodolistType> = initialState, action: TodolistReducerType): Array<TodolistType> => {
   switch (action.type) {
     case 'TASKS_FILTER_VALUE': {
       return state.map(todolist =>

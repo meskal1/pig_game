@@ -1,11 +1,12 @@
 import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
-import s from './Todolist.module.scss'
+import s from '../todolist/Todolist.module.scss'
 
 export type AddItemFormType = {
   addItem: (itemTitle: string) => void
 }
 
 export const AddItemForm: React.FC<AddItemFormType> = React.memo(({ addItem }) => {
+  console.log('render ADD_INPUT')
   const [error, setError] = useState<string | null>(null)
   const [inputValue, setInputValue] = useState<string>('')
 

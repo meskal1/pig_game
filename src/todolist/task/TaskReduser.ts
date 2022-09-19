@@ -1,7 +1,7 @@
 import React from 'react'
 import { v1 } from 'uuid'
 
-type TaskType = {
+export type TaskType = {
   id: string
   title: string
   isDone: boolean
@@ -18,7 +18,7 @@ type ActionType =
   | ChangeTaskTitleACType
   | RemoveTodolistTasksACType
   | AddTodolistTasksACType
-export const tasksReducer = (state: TasksType = initialState, action: ActionType): TasksType => {
+export const taskReducer = (state: TasksType = initialState, action: ActionType): TasksType => {
   switch (action.type) {
     case 'REMOVE_TASK': {
       state[action.payload.todolistID] = state[action.payload.todolistID].filter(taskElement => taskElement.id !== action.payload.taskID)
