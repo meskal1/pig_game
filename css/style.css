@@ -1,0 +1,226 @@
+@charset "UTF-8";
+/* 
+&display=swap
+&subset=cyrillic-ext 
+*/
+@import url("https://fonts.googleapis.com/css?family=Roboto:regular,500,700,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+/* ОБНУЛЕНИЕ СТИЛЕЙ */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+li {
+  list-style: none;
+}
+
+a,
+a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: inherit;
+  font-size: inherit;
+}
+
+img {
+  vertical-align: top;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  /* по умолчанию */
+  /* font-size: 16px;  */
+}
+
+body {
+  line-height: 1;
+  color: #fff;
+  background-color: #333;
+  font-family: "poppins";
+}
+
+.wrapper {
+  min-height: 100%;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+/* ------------------------------ */
+.goods-list__container {
+  margin: 0 auto;
+  max-width: 1166px;
+}
+
+.items-list {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (minmax(203px, 1fr))[auto-fit];
+      grid-template-columns: repeat(auto-fit, minmax(203px, 1fr));
+}
+
+.item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 7px 24px 24px;
+  background: white;
+}
+
+.item:hover .item__pic {
+  -webkit-transform: scale(1.035);
+      -ms-transform: scale(1.035);
+          transform: scale(1.035);
+  -webkit-transition: all linear 0.2s;
+  -o-transition: all linear 0.2s;
+  transition: all linear 0.2s;
+}
+
+.item__status {
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #78A962;
+  padding: 0 0 0 26px;
+  background: url("../img/check.svg") 8px 4px no-repeat;
+  margin: 0px 0px 7px 0px;
+}
+
+.item__pic {
+  position: relative;
+  padding: 0px 0px 82% 0px;
+  overflow: hidden;
+  margin: 0px 0px 10px 0px;
+  -webkit-transition: all linear 0.2s;
+  -o-transition: all linear 0.2s;
+  transition: all linear 0.2s;
+}
+
+.item__pic img {
+  margin: 0 18px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  position: absolute;
+  width: 82%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.item__subscribe {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 19px;
+  color: black;
+  margin: 0px 0px 10px 0px;
+  height: 100%;
+}
+
+.item__subscribe:hover {
+  text-decoration: underline;
+}
+
+.item__last-price {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #667766;
+  text-decoration: line-through;
+}
+
+.item__current-price {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 20px;
+  color: black;
+}
+
+.rating {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: end;
+  margin: 0px 0px 7px 0px;
+}
+
+.rating__stars {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+  -ms-flex-item-align: start;
+      align-self: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 0px 10px 0px 0px;
+}
+
+.rating__stars:hover label:hover {
+  background: url("../img/Star-gold.svg") no-repeat;
+}
+
+.rating__stars:hover label:hover ~ label {
+  background: url("../img/Star-gold.svg") no-repeat;
+}
+
+.rating__review {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  color: #A2A6B0;
+}
+
+.rating__review:hover {
+  text-decoration: underline;
+}
+
+input {
+  display: none;
+}
+
+input:checked ~ label {
+  background: url("../img/Star-gold.svg") no-repeat;
+}
+
+label {
+  cursor: pointer;
+  width: 15px;
+  height: 14px;
+  background: url("../img/Star-grey.svg") no-repeat;
+}
