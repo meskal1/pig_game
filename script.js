@@ -10,14 +10,14 @@ const newGame = document.querySelector('.btn--new')
 const rollDice = document.querySelector('.btn--roll')
 const hold = document.querySelector('.btn--hold')
 const maxValue = 15
-function playerActive() {
+const playerActive = () => {
   player1ScoreCurrent.textContent = 0
   player2ScoreCurrent.textContent = 0
   diceImg.classList.add('hidden')
   player1.classList.toggle('player--active')
   player2.classList.toggle('player--active')
 }
-rollDice.addEventListener('click', function () {
+rollDice.addEventListener('click', () => {
   diceImg.classList.remove('hidden')
   let randomDice = Math.floor(Math.random() * 6 + 1)
   diceImg.src = `./img/dice-${randomDice}.png`
@@ -31,7 +31,7 @@ rollDice.addEventListener('click', function () {
     diceImg.classList.remove('hidden')
   }
 })
-hold.addEventListener('click', function () {
+hold.addEventListener('click', () => {
   if (player1.classList.contains('player--active')) {
     player1Score.textContent = +player1ScoreCurrent.textContent + +player1Score.textContent
     if (player1Score.textContent >= maxValue) {
@@ -48,7 +48,7 @@ hold.addEventListener('click', function () {
     } else playerActive()
   }
 })
-newGame.addEventListener('click', function () {
+newGame.addEventListener('click', () => {
   if (player2.classList.contains('player--active')) {
     player1.classList.toggle('player--active')
     player2.classList.toggle('player--active')
