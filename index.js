@@ -1,18 +1,5 @@
 const numberOfDrumButtons = document.querySelectorAll(".drum").length;
 
-document.querySelectorAll(".drum").forEach((el) => {
-  el.addEventListener("click", () => {
-    const buttonInnerHTML = this.innerHTML;
-    makeSound(buttonInnerHTML);
-    buttonAnimation(buttonInnerHTML);
-  });
-});
-
-document.addEventListener("keypress", (event) => {
-  makeSound(event.key);
-  buttonAnimation(event.key);
-});
-
 const makeSound = (key) => {
   switch (key) {
     case "w":
@@ -55,3 +42,14 @@ const buttonAnimation = (currentKey) => {
     if (activeButton) activeButton.classList.remove("pressed");
   }, 100);
 };
+
+document.querySelectorAll(".drum").forEach((el) => {
+  el.addEventListener("click", (e) => {
+    makeSound(el.textContent);
+    buttonAnimation(el.textContent);
+  });
+  el.addEventListener("keypress", (e) => {
+    makeSound(e.key);
+    buttonAnimation(e.key);
+  });
+});
