@@ -1,57 +1,65 @@
 'use strict'
-
-const body = document.querySelector('body')
-const guessNumber = document.querySelector('.number')
-const score = document.querySelector('.score')
-const highScore = document.querySelector('.highscore')
-const message = document.querySelector('.message')
-const inputNumber = document.querySelector('.guess')
-const checkButton = document.querySelector('.check')
-const againButton = document.querySelector('.again')
-let randomNumber = Math.floor(Math.random() * 20 + 1)
-score.textContent = 20
-let tipedNumber
-const lose = () => {
-  if (score.textContent === 0) {
-    message.textContent = 'You loose!'
-    inputNumber.setAttribute('disabled', 'disabled')
-    checkButton.setAttribute('disabled', 'disabled')
-  }
+const player1 = document.querySelector('.player--0')
+const player2 = document.querySelector('.player--1')
+const player1ScoreCurrent = document.querySelector('#score--0')
+const player2ScoreCurrent = document.querySelector('#score--1')
+const player1Score = document.querySelector('#current--0')
+const player2Score = document.querySelector('#current--1')
+const diceImg = document.querySelector('.dice')
+const newGame = document.querySelector('.btn--new')
+const rollDice = document.querySelector('.btn--roll')
+const hold = document.querySelector('.btn--hold')
+const maxValue = 15
+function playerActive() {
+  player1ScoreCurrent.textContent = 0
+  player2ScoreCurrent.textContent = 0
+  diceImg.classList.add('hidden')
+  player1.classList.toggle('player--active')
+  player2.classList.toggle('player--active')
 }
-const onClick = () => {
-  if (inputNumber.value === '') message.textContent = 'Enter the number!'
-  else {
-    tipedNumber = Number(inputNumber.value)
-    if (tipedNumber > randomNumber) {
-      message.textContent = 'To much'
-      score.textContent--
-      lose()
-    } else if (tipedNumber < randomNumber) {
-      message.textContent = 'Not enough'
-      score.textContent--
-      lose()
-    } else {
-      message.textContent = 'You guessed'
-      body.style = 'background-color:#60b347'
-      guessNumber.textContent = randomNumber
-      if (score.textContent > highScore.textContent) {
-        highScore.textContent = score.textContent
-      }
-      inputNumber.setAttribute('disabled', 'disabled')
-    }
+rollDice.addEventListener('click', function () {
+  diceImg.classList.remove('hidden')
+  let randomDice = Math.floor(Math.random() * 6 + 1)
+  diceImg.src = `./img/dice-${randomDice}.png`
+  if (player1.classList.contains('player--active')) {
+    player1ScoreCurrent.textContent = +player1ScoreCurrent.textContent + randomDice
+  } else {
+    player2ScoreCurrent.textContent = +player2ScoreCurrent.textContent + randomDice
   }
-}
-checkButton.addEventListener('click', onClick)
-inputNumber.addEventListener('keydown', event => {
-  if (event.key === 'Enter') onClick()
+  if (randomDice === 1) {
+    playerActive()
+    diceImg.classList.remove('hidden')
+  }
 })
-againButton.addEventListener('click', e => {
-  body.removeAttribute('style')
-  guessNumber.textContent = '?'
-  score.textContent = 20
-  randomNumber = Math.floor(Math.random() * 20 + 1)
-  inputNumber.value = ''
-  inputNumber.removeAttribute('disabled', 'disabled')
-  checkButton.removeAttribute('disabled', 'disabled')
-  message.textContent = 'Start guessing...'
+hold.addEventListener('click', function () {
+  if (player1.classList.contains('player--active')) {
+    player1Score.textContent = +player1ScoreCurrent.textContent + +player1Score.textContent
+    if (player1Score.textContent >= maxValue) {
+      player1.classList.add('player--winner')
+      rollDice.setAttribute('disabled', 'disabled')
+      hold.setAttribute('disabled', 'disabled')
+    } else playerActive()
+  } else {
+    player2Score.textContent = +player2ScoreCurrent.textContent + +player2Score.textContent
+    if (player2Score.textContent >= maxValue) {
+      player2.classList.add('player--winner')
+      rollDice.setAttribute('disabled', 'disabled')
+      hold.setAttribute('disabled', 'disabled')
+    } else playerActive()
+  }
+})
+newGame.addEventListener('click', function () {
+  if (player2.classList.contains('player--active')) {
+    player1.classList.toggle('player--active')
+    player2.classList.toggle('player--active')
+  }
+  player1Score.textContent = 0
+  player2Score.textContent = 0
+  player1ScoreCurrent.textContent = 0
+  player2ScoreCurrent.textContent = 0
+  diceImg.classList.add('hidden')
+  player1.classList.remove('player--winner')
+  player2.classList.remove('player--winner')
+  rollDice.removeAttribute('disabled', 'disabled')
+  hold.removeAttribute('disabled', 'disabled')
 })
